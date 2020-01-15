@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     Alert,
     KeyboardAvoidingView,
-    ScrollView
+    ScrollView,
+    Image
 } from 'react-native';
 import styles from './comman/styles';
 import { Actions } from 'react-native-router-flux';
@@ -66,7 +67,7 @@ function login(props) {
 
             }).catch(err => {
                 console.log(err)
-                Alert.alert(environment)
+
             });
         }
 
@@ -77,9 +78,7 @@ function login(props) {
 
         getLanguage();
 
-        DeviceInfo.getPhoneNumber().then(phoneNumber => {
-            console.log(phoneNumber)
-        });
+
 
     }, []);
 
@@ -140,17 +139,18 @@ function login(props) {
 
 
                         <View style={{ flexDirection: 'row-reverse', marginTop: height * 0.04, padding: 12 }}>
-                            <Text style={{ fontSize: width * 0.04 }}>{props.storageData.lan.not_a_member}
-                                <Text
-                                    style={{ fontSize: width * 0.05, color: baseColor }}
-                                    onPress={() => Actions.signUp()}
-                                >
-                                    {props.storageData.lan.sign_up}
-                                </Text>
-                            </Text>
+                            <Text
+                                onPress={() => setLanguageModal(true)}
+                                style={{ fontSize: width * 0.04, color: baseColor }}>{props.storageData.lan.change_language}</Text>
+
+
                         </View>
-                        <View style={{ marginTop: height * 0.1 }}>
-                            <Text style={{ fontSize: width * 0.06, color: 'black', fontWeight: 'bold', marginLeft: width * 0.06 }}>{props.storageData.lan.login_to}</Text>
+                        <View style={{ marginTop: height * 0.06, alignItems: 'center', justifyContent: 'center' }}>
+                            <Image
+                                style={{ height: height * 0.14, width: width * 0.8 }}
+                                source={require('./images/grammino.png')}
+                                resizeMode='contain'
+                            />
                         </View>
                         <View style={{
                             width: width,
@@ -195,9 +195,16 @@ function login(props) {
                         </View>
                         <TouchableOpacity
                             style={{ flexDirection: 'row-reverse', marginTop: height * 0.03, padding: 12 }}
-                            onPress={() => setLanguageModal(true)}
+                            onPress={() => Actions.signUp()}
                         >
-                            <Text style={{ fontSize: width * 0.04, color: baseColor }}>{props.storageData.lan.change_language}</Text>
+                            <Text style={{ fontSize: width * 0.04 }}>{props.storageData.lan.not_a_member}
+                                <Text
+                                    style={{ fontSize: width * 0.05, color: baseColor }}
+                                    onPress={() => Actions.signUp()}
+                                >
+                                    {props.storageData.lan.sign_up}
+                                </Text>
+                            </Text>
                         </TouchableOpacity>
                     </ScrollView>
                 </KeyboardAvoidingView>

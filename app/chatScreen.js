@@ -356,82 +356,89 @@ function chatScreen(props) {
         };
 
         ImagePicker.showImagePicker(options, response => {
-            console.log('Response = ', response);
-
-            let temp = {
-                conversationId: conversationID,
-                sender: me,
-                reciever: other,
-                userPhoto: response.uri,
-                type: "video",
-                time: Date.now(),
-                loading: true
-            }
-
-            let data = {
-                add: temp,
-                convDetails: props.storageData.convDetails
-            }
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
 
 
-            let formData = new FormData();
-
-            formData.append('conversationId', conversationID);
-            formData.append('sender', me);
-            formData.append('reciever', other);
-            formData.append('type', 'video');
-            formData.append('userPhoto', {
-                uri: response.uri,
-                name: response.path,
-                type: 'video/mp4'
-            });
-
-
-
-            props.addInConv(data)
-
-            postChatImage(props.storageData.userToken, formData).then(result => {
-                if (!result.data.error) {
-                    let dumpData = {
-                        conversationId: conversationID,
-                        sender: me,
-                        reciever: other,
-                        type: "video",
-                        time: Date.now(),
-                        loading: false,
-                        ipfsPath: result.data.data.ipfsPath
-                    }
-
-                    let LoadingData = {
-                        add: dumpData,
-                        convDetails: props.storageData.convDetails
-                    }
-                    props.addInConv(LoadingData)
-                }
-                else {
-
-                    let dumpData = {
-                        conversationId: conversationID,
-                        sender: me,
-                        reciever: other,
-                        type: "video",
-                        time: Date.now(),
-                        loading: false,
-                        error: true,
-                    }
-
-                    let LoadingData = {
-                        add: dumpData,
-                        convDetails: props.storageData.convDetails
-                    }
-                    props.addInConv(LoadingData)
-
+                let temp = {
+                    conversationId: conversationID,
+                    sender: me,
+                    reciever: other,
+                    userPhoto: response.uri,
+                    type: "video",
+                    time: Date.now(),
+                    loading: true
                 }
 
-            }).catch(err => {
-                console.log(err)
-            });
+                let data = {
+                    add: temp,
+                    convDetails: props.storageData.convDetails
+                }
 
+
+                let formData = new FormData();
+
+                formData.append('conversationId', conversationID);
+                formData.append('sender', me);
+                formData.append('reciever', other);
+                formData.append('type', 'video');
+                formData.append('userPhoto', {
+                    uri: response.uri,
+                    name: response.path,
+                    type: 'video/mp4'
+                });
+
+
+
+                props.addInConv(data)
+
+                postChatImage(props.storageData.userToken, formData).then(result => {
+                    if (!result.data.error) {
+                        let dumpData = {
+                            conversationId: conversationID,
+                            sender: me,
+                            reciever: other,
+                            type: "video",
+                            time: Date.now(),
+                            loading: false,
+                            ipfsPath: result.data.data.ipfsPath
+                        }
+
+                        let LoadingData = {
+                            add: dumpData,
+                            convDetails: props.storageData.convDetails
+                        }
+                        props.addInConv(LoadingData)
+                    }
+                    else {
+
+                        let dumpData = {
+                            conversationId: conversationID,
+                            sender: me,
+                            reciever: other,
+                            type: "video",
+                            time: Date.now(),
+                            loading: false,
+                            error: true,
+                        }
+
+                        let LoadingData = {
+                            add: dumpData,
+                            convDetails: props.storageData.convDetails
+                        }
+                        props.addInConv(LoadingData)
+
+                    }
+
+                }).catch(err => {
+                    console.log(err)
+                });
+            }
         });
     }
 
@@ -449,62 +456,69 @@ function chatScreen(props) {
         };
 
         ImagePicker.showImagePicker(options, response => {
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
 
-            let formData = new FormData();
+                let formData = new FormData();
 
-            formData.append('conversationId', conversationID);
-            formData.append('sender', me);
-            formData.append('reciever', other);
-            formData.append('type', 'image');
-            formData.append('userPhoto', {
-                uri: response.uri,
-                name: response.fileName,
-                type: 'image/jpg'
-            });
+                formData.append('conversationId', conversationID);
+                formData.append('sender', me);
+                formData.append('reciever', other);
+                formData.append('type', 'image');
+                formData.append('userPhoto', {
+                    uri: response.uri,
+                    name: response.fileName,
+                    type: 'image/jpg'
+                });
 
-            postChatImage(props.storageData.userToken, formData).then(result => {
+                postChatImage(props.storageData.userToken, formData).then(result => {
 
-                if (!result.data.error) {
-                    let dumpData = {
-                        conversationId: conversationID,
-                        sender: me,
-                        reciever: other,
-                        type: "image",
-                        time: Date.now(),
-                        loading: false,
-                        ipfsPath: result.data.data.ipfsPath
+                    if (!result.data.error) {
+                        let dumpData = {
+                            conversationId: conversationID,
+                            sender: me,
+                            reciever: other,
+                            type: "image",
+                            time: Date.now(),
+                            loading: false,
+                            ipfsPath: result.data.data.ipfsPath
+                        }
+
+                        let LoadingData = {
+                            add: dumpData,
+                            convDetails: props.storageData.convDetails
+                        }
+                        props.addInConv(LoadingData)
+                    }
+                    else {
+
+                        let dumpData = {
+                            conversationId: conversationID,
+                            sender: me,
+                            reciever: other,
+                            type: "image",
+                            time: Date.now(),
+                            loading: false,
+                            error: true,
+                        }
+
+                        let LoadingData = {
+                            add: dumpData,
+                            convDetails: props.storageData.convDetails
+                        }
+                        props.addInConv(LoadingData)
+
                     }
 
-                    let LoadingData = {
-                        add: dumpData,
-                        convDetails: props.storageData.convDetails
-                    }
-                    props.addInConv(LoadingData)
-                }
-                else {
-
-                    let dumpData = {
-                        conversationId: conversationID,
-                        sender: me,
-                        reciever: other,
-                        type: "image",
-                        time: Date.now(),
-                        loading: false,
-                        error: true,
-                    }
-
-                    let LoadingData = {
-                        add: dumpData,
-                        convDetails: props.storageData.convDetails
-                    }
-                    props.addInConv(LoadingData)
-
-                }
-
-            }).catch(err => {
-                console.log(err)
-            });
-
+                }).catch(err => {
+                    console.log(err)
+                });
+            }
         });
     }
 

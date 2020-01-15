@@ -3,13 +3,15 @@ import {
     View,
     Text,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import CardView from 'react-native-cardview'
 const { width, height } = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconTwo from 'react-native-vector-icons/AntDesign';
 import styles from './comman/styles';
+
 import { Actions } from 'react-native-router-flux';
 
 export default class Header extends Component {
@@ -42,7 +44,12 @@ export default class Header extends Component {
                         <View style={{ marginLeft: width * 0.04, width: width * 0.07 }}></View>
 
                     }
-                    <Text style={styles.titleFont}>{this.props.name}</Text>
+                    {/* <Text style={styles.titleFont}>{this.props.name}</Text> */}
+                    <Image
+                        style={{ width: width * 0.1, height: width * 0.1 }}
+                        source={require('./images/logo.png')}
+                    />
+
                     {this.props.right ?
                         <TouchableOpacity
                             onPress={() => Actions.profile()}

@@ -7,7 +7,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ScrollView,
-    Modal
+    Modal,
+    BackHandler
 
 } from 'react-native';
 import styles from './comman/styles';
@@ -41,6 +42,16 @@ function home(props) {
 
     }, []);
 
+
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
+
+        return () => {
+            BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
+        };
+    }, [backButtonHandler]);
+
+    function backButtonHandler() { BackHandler.exitApp() }
 
 
 
@@ -102,7 +113,11 @@ function home(props) {
         let socket = io.connect(socketEnvironment);
         socket.emit('join', { phone: storageData.phone });
         socket.on("new_msg", data => {
+
+            console.log(data)
+
             props.messageReceived(data)
+
         });
 
 

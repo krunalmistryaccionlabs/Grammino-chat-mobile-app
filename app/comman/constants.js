@@ -1,7 +1,7 @@
 export const img = 'https://unsplash.it/400/400?image=1';
-export const baseColor = '#6494ed';
-export const statusBarColor = '#1d53b8';
-export const chatColor = '#5383db';
+export const baseColor = '#1C5870';
+export const statusBarColor = '#0f3442';
+export const chatColor = '#D7E9F0';
 
 export const language = {
     english: {
@@ -9,7 +9,7 @@ export const language = {
         sign_up: 'Sign Up',
         login_to: 'Login to explore',
         mobile_no: 'Mobile number',
-        not_a_member: 'Not a member ?',
+        not_a_member: 'Not a member? ',
         pass: 'Password',
         confirm_pass: 'Confirm Password',
         login: 'Login',
@@ -30,7 +30,7 @@ export const language = {
         sign_up: 'साइन अप करा',
         login_to: 'एक्सप्लोर करण्यासाठी लॉगिन करा',
         mobile_no: 'मोबाइल नंबर',
-        not_a_member: 'सदस्य नाही ?',
+        not_a_member: 'सदस्य नाही? ',
         pass: 'संकेतशब्द',
         confirm_pass: 'पासवर्डची पुष्टी करा',
         login: 'लॉगिन',
@@ -51,7 +51,7 @@ export const language = {
         sign_up: 'साइन अप करें',
         login_to: 'अन्वेषण करने के लिए लॉगिन करें',
         mobile_no: 'मोबाइल नंबर',
-        not_a_member: 'सदस्य नहीं है ?',
+        not_a_member: 'सदस्य नहीं है? ',
         pass: 'कुंजिका',
         confirm_pass: 'पासवर्ड की पुष्टि कीजिये',
         login: 'लॉग इन करें',
