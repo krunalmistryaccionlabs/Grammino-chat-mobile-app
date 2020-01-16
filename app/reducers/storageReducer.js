@@ -18,10 +18,22 @@ function filterData(data) {
 function filterChat(data) {
     let temp = data.convDetails;
     if (temp.length > 0) {
-        console.log(data)
 
-        console.log(temp[temp.length - 1])
-        return [...data.convDetails, data.add]
+
+        if (temp[temp.length - 1]._id !== data.add._id) {
+            return [...data.convDetails, data.add]
+        }
+        else {
+
+            if (data.add.hasOwnProperty('_id')) {
+                return [...data.convDetails]
+            }
+            else {
+                return [...data.convDetails, data.add]
+            }
+
+        }
+
     }
     else {
         return [...data.convDetails, data.add]
