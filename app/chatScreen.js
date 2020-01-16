@@ -83,11 +83,13 @@ function chatScreen(props) {
     useEffect(() => {
 
         //setChattingData([...chattingData, props.storageData.message])
-        let data = {
-            add: props.storageData.message,
-            convDetails: props.storageData.convDetails
+        if (props.storageData.message.conversationId === conversationID) {
+            let data = {
+                add: props.storageData.message,
+                convDetails: props.storageData.convDetails
+            }
+            props.addInConv(data)
         }
-        props.addInConv(data)
 
     }, [props.storageData.message]);
 

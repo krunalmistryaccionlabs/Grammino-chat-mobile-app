@@ -15,6 +15,19 @@ function filterData(data) {
     return data.chatDetails
 }
 
+function filterChat(data) {
+    let temp = data.convDetails;
+    if (temp.length > 0) {
+        console.log(data)
+
+        console.log(temp[temp.length - 1])
+        return [...data.convDetails, data.add]
+    }
+    else {
+        return [...data.convDetails, data.add]
+    }
+
+}
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -61,7 +74,7 @@ export default (state = INITIAL_STATE, action) => {
         case 'ADD_IN_CONV':
             return {
                 ...state,
-                convDetails: [...action.payload.convDetails, action.payload.add]
+                convDetails: filterChat(action.payload)
             };
         case 'RESET_CONV':
             return {
