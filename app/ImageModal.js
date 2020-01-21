@@ -12,6 +12,7 @@ const { width, height } = Dimensions.get('window');
 
 
 export default ({ setModalVisible, picture }) => {
+    console.log(picture)
     return (
         <View style={{ height: height, width: width, backgroundColor: 'black' }}>
 
@@ -29,10 +30,12 @@ export default ({ setModalVisible, picture }) => {
 
             <FastImage
                 style={{ width: width, height: width, marginTop: height * 0.15 }}
-                source={{
-                    uri: picture ? picture : img,
-                    priority: FastImage.priority.high,
-                }}
+                source={
+                    picture === null ? img :
+                        {
+                            uri: picture,
+                            priority: FastImage.priority.high,
+                        }}
                 resizeMode={FastImage.resizeMode.cover}
             />
         </View>

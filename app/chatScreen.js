@@ -655,10 +655,15 @@ function chatScreen(props) {
                     >
                         <FastImage
                             style={{ width: width * 0.12, height: width * 0.12, borderRadius: width * 0.12, marginLeft: width * 0.04 }}
-                            source={{
-                                uri: props.data.recieverInfo[0] ? props.data.recieverInfo[0].profilePhoto ? imageEnvironment + props.data.recieverInfo[0].profilePhoto : img : img,
-                                priority: FastImage.priority.low,
-                            }}
+                            source={
+                                props.data.recieverInfo[0] ?
+                                    props.data.recieverInfo[0].profilePhoto ?
+                                        {
+                                            uri: imageEnvironment + props.data.recieverInfo[0].profilePhoto,
+                                            priority: FastImage.priority.low,
+                                        } : img
+                                    : img
+                            }
                             resizeMode={FastImage.resizeMode.cover}
                         />
 

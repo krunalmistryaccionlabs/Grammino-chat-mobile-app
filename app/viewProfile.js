@@ -39,10 +39,14 @@ function viewProfile(props) {
                         >
                             <FastImage
                                 style={{ width: width * 0.5, height: width * 0.5, marginTop: height * 0.06, borderRadius: width * 0.5 }}
-                                source={{
-                                    uri: props.recieverInfo.profilePhoto ? imageEnvironment + props.recieverInfo.profilePhoto : img,
-                                    priority: FastImage.priority.high,
-                                }}
+                                source={
+                                    props.recieverInfo.profilePhoto ?
+                                        {
+                                            uri: imageEnvironment + props.recieverInfo.profilePhoto,
+                                            priority: FastImage.priority.high,
+                                        } :
+                                        img
+                                }
                                 resizeMode={FastImage.resizeMode.cover}
                             />
                         </TouchableOpacity>

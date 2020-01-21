@@ -48,7 +48,7 @@ function profile(props) {
 
         getProfile(props.storageData.userToken).then(result => {
 
-            setpicture(result.data.data[0].profilePhoto ? imageEnvironment + result.data.data[0].profilePhoto : img)
+            setpicture(result.data.data[0].profilePhoto ? imageEnvironment + result.data.data[0].profilePhoto : null)
             setUserName(result.data.data[0].name)
             setStatus(result.data.data[0].status)
 
@@ -97,26 +97,35 @@ function profile(props) {
 
     const takePicture = () => {
         ImagePicker.showImagePicker(options, response => {
-            setpicture(response.uri)
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                setpicture(response.uri)
 
 
-            let formData = new FormData();
+                let formData = new FormData();
 
-            formData.append('name', userName);
-            formData.append('status', status);
-            formData.append('phone', props.storageData.storageData.phone);
-            formData.append('userProfilePhoto', {
-                uri: response.uri,
-                name: response.fileName,
-                type: 'image/jpg'
-            });
+                formData.append('name', userName);
+                formData.append('status', status);
+                formData.append('phone', props.storageData.storageData.phone);
+                formData.append('userProfilePhoto', {
+                    uri: response.uri,
+                    name: response.fileName,
+                    type: 'image/jpg'
+                });
 
-            postProfile(formData, props.storageData.userToken).then(result => {
+                postProfile(formData, props.storageData.userToken).then(result => {
 
-            }).catch(err => {
-                console.log(err)
-            });
+                }).catch(err => {
+                    console.log(err)
+                });
+            }
         });
+
     }
 
 
@@ -162,10 +171,14 @@ function profile(props) {
                         >
                             <FastImage
                                 style={{ width: width * 0.5, height: width * 0.5, marginTop: height * 0.06, borderRadius: width * 0.5 }}
-                                source={{
-                                    uri: picture,
-                                    priority: FastImage.priority.high,
-                                }}
+                                source={
+                                    picture === null ? img :
+                                        {
+                                            uri: picture,
+                                            priority: FastImage.priority.high,
+                                        }
+
+                                }
                                 resizeMode={FastImage.resizeMode.cover}
                             />
                         </TouchableOpacity>

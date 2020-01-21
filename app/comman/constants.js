@@ -1,4 +1,4 @@
-export const img = 'https://unsplash.it/400/400?image=1';
+export const img = require('../images/userProfile.jpg');
 export const baseColor = '#1C5870';
 export const statusBarColor = '#0f3442';
 export const chatColor = '#D7E9F0';

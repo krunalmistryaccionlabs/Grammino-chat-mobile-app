@@ -20,13 +20,15 @@ export default ({ item, onPressPicture, onPressContact, index }) => {
                 width: width,
                 paddingLeft: width * 0.04
             }}>
-                <TouchableOpacity onPress={() => onPressPicture(item.recieverInfo[0].profilePhoto ? imageEnvironment + item.recieverInfo[0].profilePhoto : img)}>
+                <TouchableOpacity onPress={() => onPressPicture(item.recieverInfo[0].profilePhoto ? imageEnvironment + item.recieverInfo[0].profilePhoto : null)}>
                     <FastImage
                         style={{ width: width * 0.16, height: width * 0.16, borderRadius: width * 0.16 }}
-                        source={{
-                            uri: item.recieverInfo[0].profilePhoto ? imageEnvironment + item.recieverInfo[0].profilePhoto : img,
-                            priority: FastImage.priority.low,
-                        }}
+                        source={
+                            item.recieverInfo[0].profilePhoto ? {
+                                uri: imageEnvironment + item.recieverInfo[0].profilePhoto,
+                                priority: FastImage.priority.low,
+                            } :
+                                img}
                         resizeMode={FastImage.resizeMode.cover}
                     />
                 </TouchableOpacity>
