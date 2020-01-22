@@ -1,15 +1,12 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import {
-
     SafeAreaView,
     View,
     StatusBar,
     Dimensions,
     TouchableOpacity,
     ScrollView,
-    Modal,
-    BackHandler
-
+    Modal
 } from 'react-native';
 import styles from './comman/styles';
 import { Actions } from 'react-native-router-flux';
@@ -41,18 +38,6 @@ function home(props) {
         getToken();
 
     }, []);
-
-
-    useEffect(() => {
-        BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
-
-        return () => {
-            BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
-        };
-    }, [backButtonHandler]);
-
-    function backButtonHandler() { BackHandler.exitApp() }
-
 
 
 

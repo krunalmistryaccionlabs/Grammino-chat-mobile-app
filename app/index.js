@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Scene, Router, Stack } from 'react-native-router-flux';
+import { Scene, Router, Stack, Actions } from 'react-native-router-flux';
 import Home from './home';
 import Login from './login';
 import Profile from './profile';
@@ -61,11 +61,19 @@ const App = () => {
         }
     }
 
+    const onBackPress = () => {
+        if (Actions.state.index === 0) {
+            return false;
+        }
+        Actions.pop();
+        return true;
+    }
+
     return (
         wifiGO ?
             loading ? null :
 
-                < Router >
+                <Router backAndroidHandler={() => onBackPress()}>
                     <Stack key="root">
                         <Scene key="profile" component={Profile} hideNavBar={true} />
                         <Scene key="contactList" component={ContactList} hideNavBar={true} />
