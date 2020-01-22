@@ -1,4 +1,7 @@
-import { environment } from './../environment/environment'
+import { environment } from './../environment/environment';
+import { Alert } from 'react-native';
+import { errorMessage } from './constants';
+
 const axios = require('axios');
 
 function setHeaders({ token }) {
@@ -24,6 +27,7 @@ export function loginPost(phone, password) {
         axios.post(environment + 'login', data).then(result => {
             resolve(result.data)
         }).catch(err => {
+            Alert.alert(errorMessage);
             reject(err)
         });
     });
@@ -39,7 +43,7 @@ export function signUpPost(userName, phone, password) {
         axios.post(environment + 'user', data).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
@@ -58,7 +62,7 @@ export function updateContacts(phoneNumbers, token) {
         ).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
@@ -77,7 +81,7 @@ export function startConversation(phoneNumber, token) {
         ).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
@@ -94,7 +98,7 @@ export function postChatMessage(data, token) {
         ).then(result => {
             console.log(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
@@ -116,7 +120,7 @@ export function postRecent(conversationId, token) {
         ).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
@@ -132,7 +136,7 @@ export function getConversations(token) {
         ).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
@@ -148,7 +152,7 @@ export function getRunTimeConversation(conversationId, token) {
         ).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+
         });
     });
 }
@@ -168,7 +172,7 @@ export function postChatImage(token, formData) {
         ).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
@@ -187,7 +191,7 @@ export function postProfile(formData, token) {
         ).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
@@ -204,7 +208,7 @@ export function getProfile(token) {
         ).then(result => {
             resolve(result)
         }).catch(err => {
-            console.log(err)
+            Alert.alert(errorMessage);
         });
     });
 }
