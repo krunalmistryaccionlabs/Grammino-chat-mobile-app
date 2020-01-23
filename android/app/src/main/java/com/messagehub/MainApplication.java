@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
