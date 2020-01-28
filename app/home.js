@@ -59,7 +59,7 @@ function home(props) {
             message: props.storageData.message.body, // (required)
             playSound: false, // (optional) default: true
             soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
-            number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
+            //number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
             repeatType: 'day', // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
             //actions: '["Yes", "No"]',  // (Android only) See the doc for notification actions to know more
         });
@@ -76,7 +76,6 @@ function home(props) {
                 value: true
             }
             if (index !== -1) {
-                console.log(props.storageData.message)
                 sendPush(temp)
                 props.iconChatDetails(data)
             }
@@ -90,7 +89,6 @@ function home(props) {
                     add: result.data.data[0],
                     chatDetails: props.storageData.chatDetails
                 }
-                console.log(data)
                 props.addInChat(data)
 
             }).catch(err => {
@@ -126,7 +124,6 @@ function home(props) {
         socket.emit('join', { phone: storageData.phone });
         socket.on("new_msg", data => {
 
-            console.log(data)
 
             props.messageReceived(data)
 

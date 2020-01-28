@@ -57,7 +57,6 @@ function login(props) {
         else {
 
             loginPost(phone, password).then(result => {
-                console.log(result)
                 if (!result.error) {
                     storeData(result);
                 }

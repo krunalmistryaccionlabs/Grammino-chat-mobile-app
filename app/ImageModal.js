@@ -12,7 +12,6 @@ const { width, height } = Dimensions.get('window');
 
 
 export default ({ setModalVisible, picture }) => {
-    console.log(picture)
     return (
         <View style={{ height: height, width: width, backgroundColor: 'black' }}>
 
