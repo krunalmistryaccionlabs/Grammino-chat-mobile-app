@@ -76,7 +76,7 @@ function home(props) {
                 value: true
             }
             if (index !== -1) {
-                sendPush(temp)
+                //sendPush(temp)
                 props.iconChatDetails(data)
             }
         }
