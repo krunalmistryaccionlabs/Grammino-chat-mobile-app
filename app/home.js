@@ -234,22 +234,22 @@ function home(props) {
         <Fragment>
             <StatusBar barStyle="light-content" backgroundColor={statusBarColor} />
             <SafeAreaView>
-                {/* <PTRView onRefresh={() => refreshHome()} > */}
-                <View style={styles.container}>
-                    <View style={styles.center}>
-                        <Header name={props.storageData.lan.app_name} left={false} right={true} />
+                <PTRView onRefresh={() => refreshHome()} >
+                    <View style={styles.container}>
+                        <View style={styles.center}>
+                            <Header name={props.storageData.lan.app_name} left={false} right={true} />
+                        </View>
+                        <ScrollView style={{
+                            width: width, height: height * 0.9, marginTop: height * 0.02
+                        }}>
+                            {renderContactsChat()}
+                        </ScrollView>
+
+                        {renderModal()}
+                        {renderFloatingButton()}
+
                     </View>
-                    <ScrollView style={{
-                        width: width, height: height * 0.9, marginTop: height * 0.02
-                    }}>
-                        {renderContactsChat()}
-                    </ScrollView>
-
-                    {renderModal()}
-                    {renderFloatingButton()}
-
-                </View>
-                {/* </PTRView> */}
+                </PTRView>
             </SafeAreaView>
         </Fragment>
     );
