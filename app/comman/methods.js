@@ -2,9 +2,6 @@ import { Alert, PermissionsAndroid } from 'react-native';
 
 import RNFetchBlob from 'rn-fetch-blob';
 
-
-
-
 export async function request_storage_runtime_permission(showImage) {
 
     try {
@@ -16,8 +13,20 @@ export async function request_storage_runtime_permission(showImage) {
             }
         )
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            let PictureDir = RNFetchBlob.fs.dirs.PictureDir
+            var date = new Date();
 
-            downloadImage(showImage)
+            RNFetchBlob
+                .config({
+                    path: PictureDir + "/Gammino" + Math.floor(date.getTime()
+                        + date.getSeconds() / 2) + 'gamminoApp.jpg',
+                })
+                .fetch('GET', showImage, {
+                    //some headers ..
+                })
+                .then((res) => {
+                    Alert.alert("Image Downloaded Successfully.");
+                })
         }
         else {
 
@@ -27,32 +36,4 @@ export async function request_storage_runtime_permission(showImage) {
     } catch (err) {
         console.warn(err)
     }
-}
-
-
-const downloadImage = (showImage) => {
-    var date = new Date();
-    var image_URL = showImage;
-    var ext = getExtention(image_URL);
-    ext = "." + ext[0];
-    const { config, fs } = RNFetchBlob;
-    let PictureDir = fs.dirs.PictureDir
-    let options = {
-        fileCache: true,
-        addAndroidDownloads: {
-            useDownloadManager: true,
-            notification: true,
-            path: PictureDir + "/image_" + Math.floor(date.getTime()
-                + date.getSeconds() / 2) + ext,
-            description: 'Image'
-        }
-    }
-    config(options).fetch('GET', image_URL).then((res) => {
-        Alert.alert("Image Downloaded Successfully.");
-    });
-}
-
-const getExtention = (filename) => {
-    return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) :
-        undefined;
 }
