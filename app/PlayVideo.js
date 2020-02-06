@@ -1,16 +1,11 @@
-/*Example of React Native Video*/
 import React, { Component } from 'react';
-//Import React
 import { Platform, StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
-//Import Basic React Native Component
 import Video from 'react-native-video';
 import { Actions } from 'react-native-router-flux';
-
 import IconTwo from 'react-native-vector-icons/AntDesign';
-
-//Import React Native Video to play video
+import IconFeather from 'react-native-vector-icons/Feather';
+import { request_storage_runtime_permission_video } from './comman/methods';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
-//Media Controls to control Play/Pause/Seek and full screen
 const { width, height } = Dimensions.get('window');
 
 class PlayVideo extends Component {
@@ -27,6 +22,12 @@ class PlayVideo extends Component {
             playerState: PLAYER_STATES.PLAYING,
             screenType: 'content',
         };
+    }
+
+
+
+    async downloadImage() {
+        await request_storage_runtime_permission_video(this.props.videoUrl)
     }
 
     onSeek = seek => {
@@ -76,12 +77,12 @@ class PlayVideo extends Component {
         else this.setState({ screenType: 'content' });
     };
     renderToolbar = () => (
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width, marginLeft: -width * 0.05 }}>
             <TouchableOpacity
                 onPress={() => Actions.pop()}
             >
                 <IconTwo
-                    style={{ margin: width * 0.04 }}
+
                     name="arrowleft"
                     color="white"
                     size={width * 0.07}
@@ -90,9 +91,19 @@ class PlayVideo extends Component {
             <Text style={{
                 fontSize: width * 0.06,
                 color: "white",
-                margin: width * 0.03
-            }}>{this.props.userName}</Text>
 
+            }}>{this.props.userName}</Text>
+            <TouchableOpacity
+                onPress={() => {
+                    this.downloadImage()
+                }}>
+                <IconFeather
+
+                    name="download"
+                    color="white"
+                    size={width * 0.1}
+                />
+            </TouchableOpacity>
         </View>
     );
     onSeeking = currentTime => this.setState({ currentTime });
