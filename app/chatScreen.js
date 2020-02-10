@@ -366,6 +366,7 @@ function chatScreen(props) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
 
+                console.log(response)
 
                 let temp = {
                     conversationId: conversationID,
@@ -395,11 +396,8 @@ function chatScreen(props) {
                     type: 'video/mp4'
                 });
 
-
-
-                props.addInConv(data)
-
                 postChatImage(props.storageData.userToken, formData).then(result => {
+
                     if (!result.data.error) {
                         let dumpData = {
                             conversationId: conversationID,
