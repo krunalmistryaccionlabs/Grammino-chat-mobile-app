@@ -79,3 +79,24 @@ export const changeLanguage = (receivedData) => {
         payload: receivedData
     };
 }
+
+export const saveHelpMessages = (receivedData) => {
+    return {
+        type: 'SAVE_HELP_MESSAGES',
+        payload: receivedData
+    };
+}
+
+export const helpReceived = (receivedData) => {
+    return {
+        type: 'HELP_RECEIVED',
+        payload: receivedData
+    };
+}
+
+export const addInHelp = (receivedData) => {
+    return {
+        type: 'ADD_IN_HELP',
+        payload: receivedData
+    };
+}

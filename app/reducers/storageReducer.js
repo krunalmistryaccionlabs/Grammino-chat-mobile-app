@@ -7,7 +7,9 @@ const INITIAL_STATE = {
     chatDetails: [],
     convDetails: [],
     languageSelected: language,
-    lan: language.marathi
+    lan: language.marathi,
+    helpMessages: [],
+    helpMessageReceived: ''
 };
 
 function filterData(data) {
@@ -107,6 +109,21 @@ export default (state = INITIAL_STATE, action) => {
                 dumpValue: '',
                 chatDetails: [],
                 convDetails: []
+            };
+        case 'SAVE_HELP_MESSAGES':
+            return {
+                ...state,
+                helpMessages: action.payload
+            };
+        case 'HELP_RECEIVED':
+            return {
+                ...state,
+                helpMessageReceived: action.payload.msg
+            };
+        case 'ADD_IN_HELP':
+            return {
+                ...state,
+                helpMessages: [...action.payload.helpMessages, action.payload.add]
             };
         default:
             return state;

@@ -9,8 +9,10 @@ import SignUp from './signUp';
 import ContactList from './contactList';
 import ViewProfile from './viewProfile';
 import PlayVideo from './PlayVideo';
+import AutoMessage from './autoMessage';
 import { useNetInfo } from "@react-native-community/netinfo";
 import AsyncStorage from '@react-native-community/async-storage';
+import autoMessage from './autoMessage';
 
 
 
@@ -80,6 +82,7 @@ const App = () => {
                         <Scene key="PlayVideo" component={PlayVideo} hideNavBar={true} />
                         <Scene key="chatScreen" component={ChatScreen} hideNavBar={true} />
                         <Scene key="viewProfile" component={ViewProfile} hideNavBar={true} />
+                        <Scene key="autoMessage" component={autoMessage} hideNavBar={true} />
                         <Scene key="signUp" component={SignUp} hideNavBar={true} />
                         <Scene key="login" component={Login} hideNavBar={true} initial={login} />
                         <Scene key="home" component={Home} hideNavBar={true} initial={home} />

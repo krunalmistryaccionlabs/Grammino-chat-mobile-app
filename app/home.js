@@ -15,8 +15,8 @@ import ChatList from './ChatList'
 import IconTwo from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
-import { getConversations, getRunTimeConversation } from './comman/api';
-import { saveStorageData, saveUserToken, messageReceived, dump, saveChatDeatils, iconChatDetails, addInChat, changeLanguage } from './actions';
+import { getConversations, getRunTimeConversation, getHelpMessages } from './comman/api';
+import { saveStorageData, saveUserToken, messageReceived, dump, saveChatDeatils, iconChatDetails, addInChat, changeLanguage, helpReceived, saveHelpMessages, addInHelp } from './actions';
 import ImageModal from './ImageModal';
 import PTRView from 'react-native-pull-to-refresh';
 import { statusBarColor, baseColor } from './comman/constants';
@@ -36,6 +36,8 @@ function home(props) {
     useEffect(() => {
 
         getToken();
+
+
 
     }, []);
 
@@ -75,7 +77,20 @@ function home(props) {
 
 
 
+    useEffect(() => {
 
+        if (props.storageData.helpMessageReceived !== '') {
+            let data = {
+                add: props.storageData.helpMessageReceived,
+                helpMessages: props.storageData.helpMessages
+            }
+
+            props.addInHelp(data)
+        }
+
+
+
+    }, [props.storageData.helpMessageReceived]);
 
 
 
@@ -96,6 +111,7 @@ function home(props) {
 
         let socket = io.connect(socketEnvironment);
         socket.emit('join', { phone: storageData.phone });
+
         socket.on("new_msg", data => {
 
 
@@ -104,10 +120,27 @@ function home(props) {
         });
 
 
+
+        socket.on("new_network_msg", data => {
+
+            console.log(data)
+            props.helpReceived(data)
+
+        });
+
+
         getConversations(tokenData).then(result => {
 
             props.saveChatDeatils(result.data.data)
 
+
+        }).catch(err => {
+            console.log(err)
+        });
+
+        getHelpMessages(tokenData).then(result => {
+
+            props.saveHelpMessages(result.data.data.data)
 
         }).catch(err => {
             console.log(err)
@@ -236,4 +269,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { saveStorageData, saveUserToken, messageReceived, dump, saveChatDeatils, iconChatDetails, addInChat, changeLanguage })(home)
+export default connect(mapStateToProps, { saveStorageData, saveUserToken, messageReceived, dump, saveChatDeatils, iconChatDetails, addInChat, changeLanguage, helpReceived, saveHelpMessages, addInHelp })(home)

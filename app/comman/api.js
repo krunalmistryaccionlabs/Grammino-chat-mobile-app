@@ -212,3 +212,19 @@ export function getProfile(token) {
         });
     });
 }
+
+export function getHelpMessages(token) {
+    return new Promise((resolve, reject) => {
+        axios.get(environment + 'api/network/data',
+            {
+                headers: setHeaders({
+                    token: token
+                })
+            }
+        ).then(result => {
+            resolve(result)
+        }).catch(err => {
+            Alert.alert(errorMessage);
+        });
+    });
+}
