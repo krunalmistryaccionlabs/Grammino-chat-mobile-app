@@ -52,21 +52,6 @@ export default class Header extends Component {
 
                     {this.props.right ?
                         <TouchableOpacity
-                            onPress={() => Actions.autoMessage()}
-                        >
-                            <Icon
-
-                                name="user-edit"
-                                color="white"
-                                size={width * 0.07}
-                            />
-                        </TouchableOpacity>
-                        : <View style={{ marginRight: width * 0.04 }}>
-                            <View style={{ width: width * 0.07 }}></View>
-                        </View>
-                    }
-                    {this.props.right ?
-                        <TouchableOpacity
                             onPress={() => Actions.profile()}
                         >
                             <Icon

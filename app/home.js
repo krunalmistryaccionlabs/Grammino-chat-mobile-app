@@ -6,10 +6,12 @@ import {
     Dimensions,
     TouchableOpacity,
     ScrollView,
-    Modal
+    Modal,
+    Text
 } from 'react-native';
 import styles from './comman/styles';
 import { Actions } from 'react-native-router-flux';
+import FastImage from 'react-native-fast-image'
 import Header from './header';
 import ChatList from './ChatList'
 import IconTwo from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -21,6 +23,7 @@ import ImageModal from './ImageModal';
 import PTRView from 'react-native-pull-to-refresh';
 import { statusBarColor, baseColor } from './comman/constants';
 import io from "socket.io-client";
+import { img } from './comman/constants';
 import { socketEnvironment } from './environment/environment';
 
 const { width, height } = Dimensions.get('window');
@@ -123,7 +126,6 @@ function home(props) {
 
         socket.on("new_network_msg", data => {
 
-            console.log(data)
             props.helpReceived(data)
 
         });
@@ -228,6 +230,63 @@ function home(props) {
         )
     }
 
+
+    const renderNetworkMessages = () => {
+        return (
+            <TouchableOpacity
+                onPress={() => Actions.autoMessage()}
+                style={{ height: height * 0.12, width: width, backgroundColor: 'transparent', borderBottomColor: '#cdcbd1', borderBottomWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{
+                    flexDirection: 'row',
+                    width: width,
+                    paddingLeft: width * 0.04
+                }}>
+                    <View>
+                        <FastImage
+                            style={{ width: width * 0.16, height: width * 0.16, borderRadius: width * 0.16 }}
+                            source={img}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                    </View>
+
+                    <View style={{ paddingLeft: width * 0.04 }}>
+                        <Text
+                            numberOfLines={1}
+                            style={{
+                                fontSize: width * 0.05,
+                                color: "black",
+                                width: width * 0.66
+                            }}
+                        >
+                            Network Messages
+                    </Text>
+                        <Text
+                            numberOfLines={1}
+                            style={{
+                                fontSize: width * 0.04,
+                                color: "#99979c",
+                                width: width * 0.66
+                            }}
+                        >
+                            Available
+                    </Text>
+                    </View>
+                    {/* 
+                {item.icon ?
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <IconTwo
+                            name="md-mail-unread"
+                            color="green"
+                            size={width * 0.08}
+                        />
+                    </View>
+                    : null} */}
+
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     refreshHome = () => {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -249,7 +308,11 @@ function home(props) {
                         <ScrollView style={{
                             width: width, height: height * 0.9, marginTop: height * 0.02
                         }}>
+
+                            {renderNetworkMessages()}
+
                             {renderContactsChat()}
+
                         </ScrollView>
 
                         {renderModal()}

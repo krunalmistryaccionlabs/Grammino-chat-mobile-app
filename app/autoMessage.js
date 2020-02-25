@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import { imageEnvironment } from './environment/environment'
 import { addInHelp } from './actions';
 import IconTwo from 'react-native-vector-icons/AntDesign';
-import { getHelpMessages } from './comman/api';
+import { postHelpMessage } from './comman/api';
 import IconFour from 'react-native-vector-icons/Ionicons';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconThree from 'react-native-vector-icons/Entypo';
@@ -34,6 +34,7 @@ function autoMessage(props) {
 
     let [showImage, setShowImage] = useState('');
     let [modalVisibleImage, setModalVisibleImage] = useState(false);
+    let [message, setMessage] = useState('');
 
 
 
@@ -43,34 +44,95 @@ function autoMessage(props) {
     const renderChatMessages = () => {
         return props.storageData.helpMessages.map((item) => {
             return (
+                item.sender === props.storageData.storageData.phone
+                    ?
+                    <View style={{ width: width, flexDirection: 'row-reverse' }}>
+                        {item.type === 'image' ?
+                            < View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10 }}>
+                                <TouchableOpacity
+                                    onPress={() => imageFunction(imageEnvironment + item.ipfsPath)}
+                                    style={{ backgroundColor: '#dfdce3', borderRadius: 10, paddingHorizontal: width * 0.06 }}>
 
-                <View style={{ width: width, flexDirection: 'row' }}>
+                                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                        <FastImage
+                                            style={{ width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center', marginTop: height * 0.04 }}
+                                            source={{
+                                                uri: item.ipfsPath ? imageEnvironment + item.ipfsPath : img,
+                                                priority: FastImage.priority.low,
+                                            }}
+                                            resizeMode={FastImage.resizeMode.contain}
+                                        />
+                                        <Text
+                                            style={{ marginTop: 4, fontSize: width * 0.03, color: 'black', marginBottom: height * 0.01, textAlign: 'left', alignSelf: 'stretch', marginLeft: width * 0.04 }}
+                                        >
+                                            {moment(item.time).format('lll').toString()}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View> : null}
 
-
-                    <View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10 }}>
-                        <TouchableOpacity
-                            onPress={() => imageFunction(imageEnvironment + item.ipfsPath)}
-                            style={{ backgroundColor: '#dfdce3', borderRadius: 10, paddingHorizontal: width * 0.06 }}>
-
-                            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                <FastImage
-                                    style={{ width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center', marginTop: height * 0.04 }}
-                                    source={{
-                                        uri: item.ipfsPath ? imageEnvironment + item.ipfsPath : img,
-                                        priority: FastImage.priority.low,
-                                    }}
-                                    resizeMode={FastImage.resizeMode.contain}
-                                />
-                                <Text
-                                    style={{ marginTop: 4, fontSize: width * 0.03, color: 'black', marginBottom: height * 0.01, textAlign: 'left', alignSelf: 'stretch', marginLeft: width * 0.04 }}
-                                >
-                                    {moment(item.time).format('lll').toString()}
-                                </Text>
+                        {item.type === 'text' ?
+                            <View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10, width: width * 0.8 }}>
+                                <View style={{ backgroundColor: chatColor, borderRadius: 10 }}>
+                                    <Text
+                                        style={{ fontSize: width * 0.05, color: 'black', paddingVertical: height * 0.01, paddingHorizontal: width * 0.04 }}
+                                    >
+                                        {item.body}
+                                    </Text>
+                                    <Text
+                                        style={{ fontSize: width * 0.03, color: 'black', marginBottom: height * 0.01, textAlign: 'right', alignSelf: 'stretch', marginRight: width * 0.04 }}
+                                    >
+                                        {moment(item.time).format('lll').toString()}
+                                    </Text>
+                                </View>
                             </View>
-                        </TouchableOpacity>
+                            : null}
                     </View>
+                    :
+                    <View style={{ width: width, flexDirection: 'row' }}>
 
-                </View >
+                        {item.type === 'image' ?
+                            < View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10 }}>
+                                <TouchableOpacity
+                                    onPress={() => imageFunction(imageEnvironment + item.ipfsPath)}
+                                    style={{ backgroundColor: '#dfdce3', borderRadius: 10, paddingHorizontal: width * 0.06 }}>
+
+                                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                        <FastImage
+                                            style={{ width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center', marginTop: height * 0.04 }}
+                                            source={{
+                                                uri: item.ipfsPath ? imageEnvironment + item.ipfsPath : img,
+                                                priority: FastImage.priority.low,
+                                            }}
+                                            resizeMode={FastImage.resizeMode.contain}
+                                        />
+                                        <Text
+                                            style={{ marginTop: 4, fontSize: width * 0.03, color: 'black', marginBottom: height * 0.01, textAlign: 'left', alignSelf: 'stretch', marginLeft: width * 0.04 }}
+                                        >
+                                            {moment(item.time).format('lll').toString()}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View> : null}
+
+                        {item.type === 'text' ?
+                            <View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10, width: width * 0.8 }}>
+                                <View style={{ backgroundColor: chatColor, borderRadius: 10 }}>
+                                    <Text
+                                        style={{ fontSize: width * 0.05, color: 'black', paddingVertical: height * 0.01, paddingHorizontal: width * 0.04 }}
+                                    >
+                                        {item.body}
+                                    </Text>
+                                    <Text
+                                        style={{ fontSize: width * 0.03, color: 'black', marginBottom: height * 0.01, textAlign: 'right', alignSelf: 'stretch', marginRight: width * 0.04 }}
+                                    >
+                                        {moment(item.time).format('lll').toString()}
+                                    </Text>
+                                </View>
+                            </View>
+                            : null}
+                    </View >
+
 
             )
         })
@@ -169,20 +231,11 @@ function autoMessage(props) {
                             setMessage(messageText)
                         }}
                     />
-                    <TouchableOpacity
-                        style={{ alignItems: 'center', justifyContent: 'center' }}
-
-                    >
-                        <IconFour
-                            name="md-attach"
-                            color="gray"
-                            size={width * 0.06}
-                        />
-                    </TouchableOpacity>
                 </View>
 
 
                 <TouchableOpacity
+                    onPress={() => sendMessage()}
                     style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: baseColor, height: width * 0.12, width: width * 0.12, borderRadius: width * 0.12 }}
                 >
                     <Icon
@@ -195,6 +248,46 @@ function autoMessage(props) {
         )
     }
 
+    const sendMessage = () => {
+
+        if (message !== '') {
+
+            let temp = {
+                sender: props.storageData.storageData.phone,
+                body: message,
+                type: "text",
+                time: Date.now()
+            }
+
+            let dataHelp = {
+                sender: props.storageData.storageData.phone,
+                message: message,
+                type: "text"
+            }
+
+
+            let data = {
+                add: temp,
+                helpMessages: props.storageData.helpMessages
+            }
+
+            props.addInHelp(data)
+
+
+
+            setMessage('')
+            console.log(props.storageData.helpMessages)
+            postHelpMessage(dataHelp, props.storageData.userToken).then(result => {
+
+
+            }).catch(err => {
+                console.log(err)
+            });
+
+
+        }
+
+    }
 
     const renderHeader = () => {
         return (
@@ -234,7 +327,7 @@ function autoMessage(props) {
                             fontSize: width * 0.06,
                             color: "white", marginLeft: width * 0.02
                         }}>
-                            Help
+                            Network Messages
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -274,7 +367,7 @@ function autoMessage(props) {
                         {renderChatMessages()}
                     </ScrollView>
                     <View>
-                        {/* {renderSendBox()} */}
+                        {renderSendBox()}
                     </View>
                     {renderModal()}
                 </KeyboardAvoidingView>

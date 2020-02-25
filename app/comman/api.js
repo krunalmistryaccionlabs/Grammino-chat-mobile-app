@@ -228,3 +228,21 @@ export function getHelpMessages(token) {
         });
     });
 }
+
+
+export function postHelpMessage(data, token) {
+
+    return new Promise((resolve, reject) => {
+        axios.post(environment + 'api/network/data', data,
+            {
+                headers: setHeaders({
+                    token: token
+                })
+            }
+        ).then(result => {
+            console.log(result)
+        }).catch(err => {
+            Alert.alert(errorMessage);
+        });
+    });
+}
