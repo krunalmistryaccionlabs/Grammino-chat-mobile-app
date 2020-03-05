@@ -233,7 +233,7 @@ export function getHelpMessages(token) {
 export function postHelpMessage(data, token) {
 
     return new Promise((resolve, reject) => {
-        axios.post(environment + 'api/network/data', data,
+        axios.post(environment + 'network/message', data,
             {
                 headers: setHeaders({
                     token: token
@@ -241,6 +241,25 @@ export function postHelpMessage(data, token) {
             }
         ).then(result => {
             console.log(result)
+        }).catch(err => {
+            Alert.alert(errorMessage);
+        });
+    });
+}
+
+export function postChatImageHelp(token, formData) {
+
+    return new Promise((resolve, reject) => {
+
+        axios.post(environment + 'network/message', formData,
+            {
+                headers: setHeaders2({
+                    token: token,
+                })
+            }
+
+        ).then(result => {
+            resolve(result)
         }).catch(err => {
             Alert.alert(errorMessage);
         });

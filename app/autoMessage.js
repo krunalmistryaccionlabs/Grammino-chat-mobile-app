@@ -18,15 +18,16 @@ import { connect } from 'react-redux';
 import { imageEnvironment } from './environment/environment'
 import { addInHelp } from './actions';
 import IconTwo from 'react-native-vector-icons/AntDesign';
-import { postHelpMessage } from './comman/api';
+import { postHelpMessage, postChatImageHelp } from './comman/api';
 import IconFour from 'react-native-vector-icons/Ionicons';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconThree from 'react-native-vector-icons/Entypo';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { request_storage_runtime_permission } from './comman/methods';
 import { Actions } from 'react-native-router-flux';
-import { img, baseColor, statusBarColor, chatColor } from './comman/constants';
+import { img, baseColor, statusBarColor, chatColor, conversationIdAutoMessage, recieverAutoMessage } from './comman/constants';
 import moment from 'moment';
+import ImagePicker from 'react-native-image-picker';
 
 const { width, height } = Dimensions.get('window');
 
@@ -35,6 +36,7 @@ function autoMessage(props) {
     let [showImage, setShowImage] = useState('');
     let [modalVisibleImage, setModalVisibleImage] = useState(false);
     let [message, setMessage] = useState('');
+    let [modalVisible, setModalVisible] = useState(false);
 
 
 
@@ -87,6 +89,50 @@ function autoMessage(props) {
                                 </View>
                             </View>
                             : null}
+                        {
+                            item.type === 'video' ?
+                                <View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10 }}>
+                                    <TouchableOpacity
+                                        style={{ backgroundColor: chatColor, borderRadius: 10, paddingHorizontal: width * 0.06 }}
+                                        onPress={() => Actions.PlayVideo({ videoUrl: imageEnvironment + item.ipfsPath, userName: 'User' })}
+                                    >
+                                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                            {item.loading ?
+                                                <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'black', width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center' }}>
+                                                    <ActivityIndicator size={width * 0.1} color="white" />
+                                                </View> :
+                                                null}
+                                            {item.error ?
+                                                <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'black', width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center' }}>
+                                                    <Text style={{ color: 'white' }}>Something went wrong</Text>
+                                                </View> :
+                                                null}
+
+                                            <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'transparent', width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center' }}>
+                                                <IconFontAwesome5
+                                                    name="play"
+                                                    color="white"
+                                                    size={width * 0.07}
+                                                />
+                                            </View>
+                                            <FastImage
+                                                style={{ width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center', marginTop: height * 0.04 }}
+                                                source={{
+                                                    uri: item.ipfsPath ? imageEnvironment + item.ipfsPath : img,
+                                                    priority: FastImage.priority.low,
+                                                }}
+                                                resizeMode={FastImage.resizeMode.contain}
+                                            />
+                                        </View>
+                                        <Text
+                                            style={{ marginTop: 4, fontSize: width * 0.03, color: 'black', marginBottom: height * 0.01, textAlign: 'right', alignSelf: 'stretch', marginRight: width * 0.04 }}
+                                        >
+                                            {moment(item.time).format('lll').toString()}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View> : null
+                        }
+
                     </View>
                     :
                     <View style={{ width: width, flexDirection: 'row' }}>
@@ -98,8 +144,9 @@ function autoMessage(props) {
                                     style={{ backgroundColor: '#dfdce3', borderRadius: 10, paddingHorizontal: width * 0.06 }}>
 
                                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                        <Text style={{ marginTop: height * 0.02, fontSize: width * 0.04, fontWeight: 'bold', color: statusBarColor, textAlign: 'left' }}>{item.sender}</Text>
                                         <FastImage
-                                            style={{ width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center', marginTop: height * 0.04 }}
+                                            style={{ width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center', marginTop: height * 0.01 }}
                                             source={{
                                                 uri: item.ipfsPath ? imageEnvironment + item.ipfsPath : img,
                                                 priority: FastImage.priority.low,
@@ -117,7 +164,9 @@ function autoMessage(props) {
 
                         {item.type === 'text' ?
                             <View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10, width: width * 0.8 }}>
-                                <View style={{ backgroundColor: chatColor, borderRadius: 10 }}>
+                                <View style={{ backgroundColor: '#dfdce3', borderRadius: 10 }}>
+                                    <Text style={{ marginTop: height * 0.01, paddingHorizontal: width * 0.04, fontSize: width * 0.04, fontWeight: 'bold', color: statusBarColor, textAlign: 'left' }}>{item.sender}</Text>
+
                                     <Text
                                         style={{ fontSize: width * 0.05, color: 'black', paddingVertical: height * 0.01, paddingHorizontal: width * 0.04 }}
                                     >
@@ -131,6 +180,39 @@ function autoMessage(props) {
                                 </View>
                             </View>
                             : null}
+                        {item.type === 'video' ?
+                            <View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10 }}>
+                                <TouchableOpacity
+                                    onPress={() => Actions.PlayVideo({ videoUrl: imageEnvironment + item.ipfsPath, userName: 'User' })}
+                                    style={{ backgroundColor: '#dfdce3', borderRadius: 10, paddingHorizontal: width * 0.06 }}>
+
+                                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                        <Text style={{ marginTop: height * 0.02, fontSize: width * 0.04, fontWeight: 'bold', color: statusBarColor, textAlign: 'left' }}>{item.sender}</Text>
+
+                                        <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'transparent', width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center' }}>
+                                            <IconFontAwesome5
+                                                name="play"
+                                                color="white"
+                                                size={width * 0.07}
+                                            />
+                                        </View>
+                                        <FastImage
+                                            style={{ width: width * 0.4, height: height * 0.3, alignItems: 'center', justifyContent: 'center', marginTop: height * 0.01 }}
+                                            source={{
+                                                uri: item.ipfsPath ? imageEnvironment + item.ipfsPath : img,
+                                                priority: FastImage.priority.low,
+                                            }}
+                                            resizeMode={FastImage.resizeMode.contain}
+                                        />
+                                        <Text
+                                            style={{ marginTop: 4, fontSize: width * 0.03, color: 'black', marginBottom: height * 0.01, textAlign: 'left', alignSelf: 'stretch', marginLeft: width * 0.04 }}
+                                        >
+                                            {moment(item.time).format('lll').toString()}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View> : null
+                        }
                     </View >
 
 
@@ -202,7 +284,132 @@ function autoMessage(props) {
 
 
 
+    const selectVideoTapped = () => {
+        setModalVisible(false)
+        const options = {
+            title: 'Video Picker',
+            takePhotoButtonTitle: 'Take Video...',
+            mediaType: 'video',
+            videoQuality: 'medium',
+        };
 
+        ImagePicker.showImagePicker(options, response => {
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+
+                console.log(response)
+
+
+                let formData = new FormData();
+
+                formData.append('conversationId', conversationIdAutoMessage);
+                formData.append('sender', props.storageData.storageData.phone);
+                formData.append('reciever', recieverAutoMessage);
+                formData.append('type', 'video');
+                formData.append('userPhoto', {
+                    uri: response.uri,
+                    name: response.path,
+                    type: 'video/mp4'
+                });
+
+                postChatImageHelp(props.storageData.userToken, formData).then(result => {
+
+                    if (!result.data.error) {
+
+                        let dumpData = {
+                            conversationId: conversationIdAutoMessage,
+                            sender: props.storageData.storageData.phone,
+                            reciever: recieverAutoMessage,
+                            type: "video",
+                            time: Date.now(),
+                            loading: false,
+                            ipfsPath: result.data.data.ipfsPath
+                        }
+
+                        let LoadingData = {
+                            add: dumpData,
+                            helpMessages: props.storageData.helpMessages
+                        }
+
+                        props.addInHelp(LoadingData)
+
+                    }
+
+
+                }).catch(err => {
+                    console.log(err)
+                });
+            }
+        });
+    }
+
+
+
+    const selectPhotoTapped = () => {
+        setModalVisible(false)
+        const options = {
+            quality: 0.2,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true,
+            },
+        };
+
+        ImagePicker.showImagePicker(options, response => {
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+
+                let formData = new FormData();
+
+                formData.append('conversationId', conversationIdAutoMessage);
+                formData.append('sender', props.storageData.storageData.phone);
+                formData.append('reciever', recieverAutoMessage);
+                formData.append('type', 'image');
+                formData.append('userPhoto', {
+                    uri: response.uri,
+                    name: response.fileName,
+                    type: 'image/jpg'
+                });
+
+                postChatImageHelp(props.storageData.userToken, formData).then(result => {
+
+                    console.log(result)
+                    if (!result.data.error) {
+                        let dumpData = {
+                            conversationId: conversationIdAutoMessage,
+                            sender: props.storageData.storageData.phone,
+                            reciever: recieverAutoMessage,
+                            type: "image",
+                            time: Date.now(),
+                            loading: false,
+                            ipfsPath: result.data.data.ipfsPath
+                        }
+
+
+                        let LoadingData = {
+                            add: dumpData,
+                            helpMessages: props.storageData.helpMessages
+                        }
+                        props.addInHelp(LoadingData)
+                    }
+
+                }).catch(err => {
+                    console.log(err)
+                });
+            }
+        });
+    }
 
 
     const renderSendBox = () => {
@@ -231,6 +438,16 @@ function autoMessage(props) {
                             setMessage(messageText)
                         }}
                     />
+                    <TouchableOpacity
+                        style={{ alignItems: 'center', justifyContent: 'center' }}
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <IconFour
+                            name="md-attach"
+                            color="gray"
+                            size={width * 0.06}
+                        />
+                    </TouchableOpacity>
                 </View>
 
 
@@ -262,7 +479,9 @@ function autoMessage(props) {
             let dataHelp = {
                 sender: props.storageData.storageData.phone,
                 message: message,
-                type: "text"
+                type: "text",
+                conversationId: conversationIdAutoMessage,
+                reciever: recieverAutoMessage
             }
 
 
@@ -276,7 +495,6 @@ function autoMessage(props) {
 
 
             setMessage('')
-            console.log(props.storageData.helpMessages)
             postHelpMessage(dataHelp, props.storageData.userToken).then(result => {
 
 
@@ -371,7 +589,52 @@ function autoMessage(props) {
                     </View>
                     {renderModal()}
                 </KeyboardAvoidingView>
-
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={modalVisible}
+                    transparent={true}
+                >
+                    <TouchableOpacity
+                        onPress={() => setModalVisible(false)}
+                        style={{ flexDirection: 'column-reverse', height: height, backgroundColor: 'transparent' }}
+                    >
+                        <View
+                            style={{ height: height * 0.2, width: width, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-around' }}
+                        >
+                            <TouchableOpacity
+                                style={{ alignItems: 'center', justifyContent: 'center' }}
+                                onPress={() => selectPhotoTapped()}
+                            >
+                                <IconThree
+                                    name="images"
+                                    color={baseColor}
+                                    size={width * 0.14}
+                                />
+                                <Text
+                                    style={{ fontSize: width * 0.04, color: 'black', paddingVertical: height * 0.01, paddingHorizontal: width * 0.04 }}
+                                >
+                                    {props.storageData.lan.image_value}
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ alignItems: 'center', justifyContent: 'center' }}
+                                onPress={() => selectVideoTapped()}
+                            >
+                                <IconThree
+                                    name="video-camera"
+                                    color={baseColor}
+                                    size={width * 0.14}
+                                />
+                                <Text
+                                    style={{ fontSize: width * 0.04, color: 'black', paddingVertical: height * 0.01, paddingHorizontal: width * 0.04 }}
+                                >
+                                    {props.storageData.lan.video_value}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
             </SafeAreaView>
 
         </Fragment>

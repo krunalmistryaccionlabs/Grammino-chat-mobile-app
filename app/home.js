@@ -126,7 +126,9 @@ function home(props) {
 
         socket.on("new_network_msg", data => {
 
-            props.helpReceived(data)
+            if (data.msg.sender != storageData.phone) {
+                props.helpReceived(data)
+            }
 
         });
 
@@ -271,17 +273,6 @@ function home(props) {
                             Available
                     </Text>
                     </View>
-                    {/* 
-                {item.icon ?
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <IconTwo
-                            name="md-mail-unread"
-                            color="green"
-                            size={width * 0.08}
-                        />
-                    </View>
-                    : null} */}
-
                 </View>
             </TouchableOpacity>
         )

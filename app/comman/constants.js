@@ -3,6 +3,10 @@ export const baseColor = '#1C5870';
 export const statusBarColor = '#0f3442';
 export const chatColor = '#D7E9F0';
 export const errorMessage = 'You are not connected to the authorised network.';
+export const conversationIdAutoMessage = '123456789';
+export const recieverAutoMessage = '00000';
+
+
 
 export const language = {
     english: {
