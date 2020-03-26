@@ -1,73 +1,94 @@
-import React from 'react';
-import {
-    View,
-    Text,
-    Dimensions,
-    TouchableOpacity
-} from 'react-native';
-import FastImage from 'react-native-fast-image'
-import { img } from './comman/constants';
-import IconTwo from 'react-native-vector-icons/Ionicons';
-import { imageEnvironment } from './environment/environment'
+import React from "react";
+import { View, Text, Dimensions, TouchableOpacity } from "react-native";
+import FastImage from "react-native-fast-image";
+import { img } from "./comman/constants";
+import IconTwo from "react-native-vector-icons/Ionicons";
+import { imageEnvironment } from "./environment/environment";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 export default ({ item, onPressPicture, onPressContact, index }) => {
-    return (
-        <View style={{ height: height * 0.12, width: width, backgroundColor: 'transparent', borderBottomColor: '#cdcbd1', borderBottomWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={{
-                flexDirection: 'row',
-                width: width,
-                paddingLeft: width * 0.04
-            }}>
-                <TouchableOpacity onPress={() => onPressPicture(item.recieverInfo[0].profilePhoto ? imageEnvironment + item.recieverInfo[0].profilePhoto : null)}>
-                    <FastImage
-                        style={{ width: width * 0.16, height: width * 0.16, borderRadius: width * 0.16 }}
-                        source={
-                            item.recieverInfo[0].profilePhoto ? {
-                                uri: imageEnvironment + item.recieverInfo[0].profilePhoto,
-                                priority: FastImage.priority.low,
-                            } :
-                                img}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                </TouchableOpacity>
+  return (
+    <View
+      style={{
+        height: height * 0.12,
+        width: width,
+        backgroundColor: "transparent",
+        borderBottomColor: "#cdcbd1",
+        borderBottomWidth: 1,
+        alignItems: "center",
+        justifyContent: "center"
+      }}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          width: width,
+          paddingLeft: width * 0.04
+        }}
+      >
+        <TouchableOpacity
+          onPress={() =>
+            onPressPicture(
+              item.recieverInfo[0].profilePhoto
+                ? imageEnvironment + item.recieverInfo[0].profilePhoto
+                : null
+            )
+          }
+        >
+          <FastImage
+            style={{
+              width: width * 0.16,
+              height: width * 0.16,
+              borderRadius: width * 0.16
+            }}
+            source={
+              item.recieverInfo[0].profilePhoto
+                ? {
+                    uri: imageEnvironment + item.recieverInfo[0].profilePhoto,
+                    priority: FastImage.priority.low
+                  }
+                : img
+            }
+            resizeMode={FastImage.resizeMode.cover}
+          />
+        </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={{ paddingLeft: width * 0.04 }}
-                    onPress={() => onPressContact(item, index)}
-                >
-                    <Text
-                        numberOfLines={1}
-                        style={{
-                            fontSize: width * 0.05,
-                            color: "black",
-                            width: width * 0.66
-                        }}
-                    >{item.recieverInfo[0].name ? item.recieverInfo[0].name : 'User'}
-                    </Text>
-                    <Text
-                        numberOfLines={1}
-                        style={{
-                            fontSize: width * 0.04,
-                            color: "#99979c",
-                            width: width * 0.66
-                        }}
-                    >{item.recieverInfo[0].status ? item.recieverInfo[0].status : 'Available'}
-                    </Text>
-                </TouchableOpacity>
+        <TouchableOpacity
+          style={{ paddingLeft: width * 0.04 }}
+          onPress={() => onPressContact(item, index)}
+        >
+          <Text
+            numberOfLines={1}
+            style={{
+              fontSize: width * 0.05,
+              color: "black",
+              width: width * 0.66
+            }}
+          >
+            {item.recieverInfo[0].name ? item.recieverInfo[0].name : "User"}
+          </Text>
+          {console.log(item.recieverInfo)}
+          <Text
+            numberOfLines={1}
+            style={{
+              fontSize: width * 0.04,
+              color: "#99979c",
+              width: width * 0.66
+            }}
+          >
+            {item.recieverInfo[0].status
+              ? item.recieverInfo[0].status
+              : "Available"}
+          </Text>
+        </TouchableOpacity>
 
-                {item.icon ?
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <IconTwo
-                            name="md-mail-unread"
-                            color="green"
-                            size={width * 0.08}
-                        />
-                    </View>
-                    : null}
-
-            </View>
-        </View>
-    );
+        {item.icon ? (
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <IconTwo name="md-mail-unread" color="green" size={width * 0.08} />
+          </View>
+        ) : null}
+      </View>
+    </View>
+  );
 };

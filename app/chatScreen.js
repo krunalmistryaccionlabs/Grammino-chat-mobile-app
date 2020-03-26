@@ -104,13 +104,11 @@ function chatScreen(props) {
     }
 
     const renderChatMessages = () => {
-        return props.storageData.convDetails.map((item) => {
+        return props.storageData.convDetails.map((item,index) => {
             return (
                 item.sender === me ?
-                    <View style={{ width: width, flexDirection: 'row-reverse' }}>
-
-
-
+                    <View                     key={`chat-message-${index}`}
+                     style={{ width: width, flexDirection: 'row-reverse' }}>
 
                         {item.type === 'text' ?
                             <View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10, width: width * 0.8 }}>
@@ -209,7 +207,7 @@ function chatScreen(props) {
                     </View >
 
                     :
-                    <View style={{ width: width, flexDirection: 'row' }}>
+                    <View  key={`chat-message-${index}`} style={{ width: width, flexDirection: 'row' }}>
 
                         {item.type === 'text' ?
                             <View style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 10, width: width * 0.8 }}>
