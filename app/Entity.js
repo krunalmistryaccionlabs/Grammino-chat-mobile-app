@@ -1,13 +1,13 @@
 import React from "react";
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import FastImage from "react-native-fast-image";
-import { img } from "./comman/constants";
+import { entityIcon } from "./comman/constants";
 import IconTwo from "react-native-vector-icons/Ionicons";
 import { imageEnvironment } from "./environment/environment";
 
 const { width, height } = Dimensions.get("window");
 
-export default ({ item, onPressPicture, onPressContact, index }) => {
+function Entity({ item, onPressEntity, index }) {
   return (
     <View
       style={{
@@ -28,13 +28,13 @@ export default ({ item, onPressPicture, onPressContact, index }) => {
         }}
       >
         <TouchableOpacity
-          onPress={() =>
-            onPressPicture(
-              item.recieverInfo[0].profilePhoto
-                ? imageEnvironment + item.recieverInfo[0].profilePhoto
-                : null
-            )
-          }
+        //   onPress={() =>
+        //     onPressPicture(
+        //       item.recieverInfo[0].profilePhoto
+        //         ? imageEnvironment + item.recieverInfo[0].profilePhoto
+        //         : null
+        //     )
+        //   }
         >
           <FastImage
             style={{
@@ -42,21 +42,14 @@ export default ({ item, onPressPicture, onPressContact, index }) => {
               height: width * 0.16,
               borderRadius: width * 0.16
             }}
-            source={
-              item.recieverInfo[0].profilePhoto
-                ? {
-                    uri: imageEnvironment + item.recieverInfo[0].profilePhoto,
-                    priority: FastImage.priority.low
-                  }
-                : img
-            }
+            source={entityIcon}
             resizeMode={FastImage.resizeMode.cover}
           />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={{ paddingLeft: width * 0.04 }}
-          onPress={() => onPressContact(item, index)}
+          onPress={() => onPressEntity(item, index)}
         >
           <Text
             numberOfLines={1}
@@ -66,7 +59,7 @@ export default ({ item, onPressPicture, onPressContact, index }) => {
               width: width * 0.66
             }}
           >
-            {item.recieverInfo[0].name ? item.recieverInfo[0].name : "User"}
+            {item.name ? item.name : "Entity"}
           </Text>
           <Text
             numberOfLines={1}
@@ -76,18 +69,14 @@ export default ({ item, onPressPicture, onPressContact, index }) => {
               width: width * 0.66
             }}
           >
-            {item.recieverInfo[0].status
-              ? item.recieverInfo[0].status
-              : "Available"}
+            Available
           </Text>
         </TouchableOpacity>
-
-        {item.icon ? (
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <IconTwo name="md-mail-unread" color="green" size={width * 0.08} />
-          </View>
-        ) : null}
       </View>
     </View>
   );
-};
+}
+
+Entity.propTypes = {};
+
+export default Entity;

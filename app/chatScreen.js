@@ -40,6 +40,7 @@ const { width, height } = Dimensions.get('window');
 
 function chatScreen(props) {
 
+    
 
     let [conversationID, setConversationID] = useState('');
     let [me, setMe] = useState('');
@@ -107,7 +108,7 @@ function chatScreen(props) {
         return props.storageData.convDetails.map((item,index) => {
             return (
                 item.sender === me ?
-                    <View                     key={`chat-message-${index}`}
+                    <View key={`chat-message-${index}`}
                      style={{ width: width, flexDirection: 'row-reverse' }}>
 
                         {item.type === 'text' ?
@@ -203,9 +204,7 @@ function chatScreen(props) {
                                     </TouchableOpacity>
                                 </View> : null
                         }
-
                     </View >
-
                     :
                     <View  key={`chat-message-${index}`} style={{ width: width, flexDirection: 'row' }}>
 
@@ -678,7 +677,7 @@ function chatScreen(props) {
     return (
         <Fragment>
 
-            <StatusBar barStyle="light-content" backgroundColor={statusBarColor} />
+            <StatusBar hidden={true} barStyle="light-content" backgroundColor={statusBarColor} />
             <SafeAreaView>
                 <KeyboardAvoidingView
                     style={{
@@ -771,6 +770,7 @@ function chatScreen(props) {
 
 
 function mapStateToProps(state) {
+    
     return {
         storageData: state
     }

@@ -16,3 +16,13 @@ export const processPhoneNumber = phoneNumber => {
     return trimmedPhoneNumber.replace(/\b0+/g, "");
   } else return phoneNumber.replace(/[^0-9]/g, "").replace(/\b0+/, "");
 };
+
+export const isObjEmpty = obj => {
+  for (var prop in obj) {
+    if (obj.hasOwnProperty(prop)) {
+      return false;
+    }
+  }
+
+  return JSON.stringify(obj) === JSON.stringify({});
+};

@@ -60,7 +60,6 @@ function contactList(props) {
         updateContacts(data, props.token)
           .then(result => {
             if (!result.data.error) {
-              console.log("Updated in contacts > Results > ", result.data.data);
 
               setContactData(result.data.data);
               storeContactsData(result.data.data);
@@ -83,7 +82,6 @@ function contactList(props) {
 
   getData = async () => {
     let data = await AsyncStorage.getItem("contactData");
-    console.log("Get Contact Data > ", data);
 
     if (data !== null) {
       setContactData(JSON.parse(data));

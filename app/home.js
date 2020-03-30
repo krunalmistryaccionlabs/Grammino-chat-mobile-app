@@ -20,12 +20,14 @@ import { connect } from "react-redux";
 import {
   getConversations,
   getRunTimeConversation,
-  getHelpMessages
+  getHelpMessages,
+  getEntities
 } from "./comman/api";
 import {
   saveStorageData,
   saveUserToken,
   messageReceived,
+  addInEntityConv,
   dump,
   saveChatDeatils,
   iconChatDetails,
@@ -33,7 +35,8 @@ import {
   changeLanguage,
   helpReceived,
   saveHelpMessages,
-  addInHelp
+  addInHelp,
+  setEntities
 } from "./actions";
 import ImageModal from "./ImageModal";
 import PTRView from "react-native-pull-to-refresh";
@@ -41,6 +44,7 @@ import { statusBarColor, baseColor } from "./comman/constants";
 import io from "socket.io-client";
 import { img } from "./comman/constants";
 import { socketEnvironment } from "./environment/environment";
+import Entity from "./Entity";
 
 const { width, height } = Dimensions.get("window");
 
@@ -112,14 +116,38 @@ function home(props) {
     socket.emit("join", { phone: storageData.phone });
 
     socket.on("new_msg", data => {
+      console.log("New message received", data);
+
       props.messageReceived(data);
     });
 
     socket.on("new_network_msg", data => {
+      console.log("New network message received");
+
       if (data.msg.sender != storageData.phone) {
         props.helpReceived(data);
       }
     });
+
+    socket.on("new_entity_msg", data => {
+      console.log("New entity message received", data);
+      const {
+        msg: { entityId },
+        msg
+      } = data;
+      props.addInEntityConv(entityId, msg);
+      // if (data.msg.sender != storageData.phone) {
+      //   props.helpReceived(data);
+      // }
+    });
+
+    getEntities(tokenData)
+      .then(result => {
+        props.setEntities(result.data.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
     getConversations(tokenData)
       .then(result => {
@@ -155,6 +183,37 @@ function home(props) {
       );
     });
   };
+
+  const renderEntities = () => {
+    return props.storageData.entities.map((item, index) => {
+      return (
+        <Entity
+          item={item}
+          // onPressPicture={onPressPicture}
+          onPressEntity={onPressEntity}
+          index={index}
+          key={`chat-${index}`}
+        />
+      );
+    });
+  };
+
+  function onPressEntity(entity, index) {
+    // let item = {
+    //   name: entity.name,
+    //   id: entity._id
+    // };
+
+    // let data = {
+    //   index: index,
+    //   chatDetails: props.storageData.chatDetails,
+    //   value: false
+    // };
+
+    // props.iconChatDetails(data);
+
+    Actions.entityChatScreen({ entity });
+  }
 
   function onPressContact(itemData, index) {
     let item = {
@@ -288,7 +347,7 @@ function home(props) {
               }}
             >
               {renderNetworkMessages()}
-
+              {renderEntities()}
               {renderContactsChat()}
             </ScrollView>
 
@@ -302,6 +361,7 @@ function home(props) {
 }
 
 function mapStateToProps(state) {
+  // console.log("State >", state);
   return {
     storageData: state
   };
@@ -318,5 +378,7 @@ export default connect(mapStateToProps, {
   changeLanguage,
   helpReceived,
   saveHelpMessages,
-  addInHelp
+  addInHelp,
+  setEntities,
+  addInEntityConv
 })(home);

@@ -121,6 +121,53 @@ export function postChatMessage(data, token) {
       });
   });
 }
+export function sendActionToEntity(entityId, phone, userName, message, token) {
+  var payload = {
+    entityId,
+    phone,
+    userName,
+    message,
+    type: "text"
+  };
+
+  return new Promise((resolve, reject) => {
+    axios
+      .post(environment + "api/entity/communication", payload, {
+        headers: setHeaders({
+          token: token
+        })
+      })
+      .then(result => {
+        resolve(result);
+      })
+      .catch(err => {
+        Alert.alert(errorMessage);
+      });
+  });
+}
+
+export function getEntityConversation(entityId, phone, token) {
+  var payload = {
+    entityId,
+    phone
+  };
+
+  return new Promise((resolve, reject) => {
+    axios
+      .post(environment + "api/entity/communication/list", payload, {
+        headers: setHeaders({
+          token: token
+        })
+      })
+      .then(result => {
+
+        resolve(result);
+      })
+      .catch(err => {
+        Alert.alert(errorMessage);
+      });
+  });
+}
 
 export function postRecent(conversationId, token) {
   var data = {
@@ -130,6 +177,23 @@ export function postRecent(conversationId, token) {
   return new Promise((resolve, reject) => {
     axios
       .post(environment + "api/chat/recent", data, {
+        headers: setHeaders({
+          token: token
+        })
+      })
+      .then(result => {
+        resolve(result);
+      })
+      .catch(err => {
+        Alert.alert(errorMessage);
+      });
+  });
+}
+
+export function getEntities(token) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(environment + "api/entity", {
         headers: setHeaders({
           token: token
         })
@@ -162,6 +226,7 @@ export function getConversations(token) {
 
 export function getRunTimeConversation(conversationId, token) {
   return new Promise((resolve, reject) => {
+
     axios
       .get(environment + "api/conversation/" + conversationId, {
         headers: setHeaders({
@@ -169,6 +234,7 @@ export function getRunTimeConversation(conversationId, token) {
         })
       })
       .then(result => {
+
         resolve(result);
       })
       .catch(err => {});
