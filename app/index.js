@@ -10,10 +10,14 @@ import SignUp from "./signUp";
 import ContactList from "./contactList";
 import ViewProfile from "./viewProfile";
 import PlayVideo from "./PlayVideo";
-import AutoMessage from "./autoMessage";
 import { useNetInfo } from "@react-native-community/netinfo";
 import AsyncStorage from "@react-native-community/async-storage";
 import autoMessage from "./autoMessage";
+import {
+  connectSocket,
+  disconnectSocket,
+  emitSocketJoinEvent
+} from "./services/socket";
 
 const App = () => {
   let [login, setLogin] = useState(false);
@@ -25,24 +29,36 @@ const App = () => {
   const netInfo = useNetInfo();
 
   useEffect(() => {
+    connectSocket();
+    return () => {
+      console.log("App unmounted");
+      disconnectSocket();
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("Effect netInfo.type > ", netInfo.type);
+
     if (wifiType !== netInfo.type) {
       setWifiType(netInfo.type);
       if (netInfo.type === "wifi") {
         setWifiGo(true);
         getData();
       } else if (netInfo.type === "unknown") {
-        setWifiGo(true);
-        getData();
+        setWifiGo(false);
+        // getData();
       } else {
         setWifiGo(false);
       }
     }
-  }, [netInfo]);
+  }, [netInfo.type]);
 
   getData = async () => {
-    access = await AsyncStorage.getItem("access");
+    const access = await AsyncStorage.getItem("access");
 
     if (access === "true") {
+      const phone = await AsyncStorage.getItem("phone");
+      emitSocketJoinEvent(phone);
       setHome(true);
       setloading(false);
     } else {

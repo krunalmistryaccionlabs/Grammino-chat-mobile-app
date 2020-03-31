@@ -85,7 +85,6 @@ export default (state = INITIAL_STATE, action) => {
       };
     case "SET_ENTITY_CONVERSATION": {
       const { entityId, data } = action.payload;
-      console.log("Setting ent conv", action.payload);
 
       return {
         ...state,
@@ -103,7 +102,6 @@ export default (state = INITIAL_STATE, action) => {
 
     case "ADD_IN_ENTITY_CONV": {
       const { entityId, data } = action.payload;
-      console.log("Adding in ent conv", action.payload);
 
       return {
         ...state,

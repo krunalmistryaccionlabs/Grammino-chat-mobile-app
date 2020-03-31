@@ -21,7 +21,8 @@ import {
   getConversations,
   getRunTimeConversation,
   getHelpMessages,
-  getEntities
+  getEntities,
+  getEntityConversation
 } from "./comman/api";
 import {
   saveStorageData,
@@ -36,15 +37,17 @@ import {
   helpReceived,
   saveHelpMessages,
   addInHelp,
-  setEntities
+  setEntities,
+  setEntityConversation
 } from "./actions";
 import ImageModal from "./ImageModal";
 import PTRView from "react-native-pull-to-refresh";
 import { statusBarColor, baseColor } from "./comman/constants";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { img } from "./comman/constants";
-import { socketEnvironment } from "./environment/environment";
+// import { socketEnvironment } from "./environment/environment";
 import Entity from "./Entity";
+import { attachEventExecutor } from "./services/socket";
 
 const { width, height } = Dimensions.get("window");
 
@@ -52,6 +55,8 @@ function home(props) {
   let [modalVisible, setModalVisible] = useState(false);
   let [modalImage, setModalImage] = useState("");
   let [token, setToken] = useState("");
+
+  // let socket;
 
   useEffect(() => {
     getToken();
@@ -112,34 +117,74 @@ function home(props) {
       props.changeLanguage(userLanguage);
     }
 
-    let socket = io.connect(socketEnvironment);
-    socket.emit("join", { phone: storageData.phone });
+    // socket = io.connect(socketEnvironment);
+    // socket.emit("join", { phone: storageData.phone });
 
-    socket.on("new_msg", data => {
+    attachEventExecutor("new_msg", data => {
       console.log("New message received", data);
-
       props.messageReceived(data);
     });
 
-    socket.on("new_network_msg", data => {
+    attachEventExecutor("new_network_msg", data => {
       console.log("New network message received");
-
       if (data.msg.sender != storageData.phone) {
         props.helpReceived(data);
       }
     });
 
-    socket.on("new_entity_msg", data => {
-      console.log("New entity message received", data);
+    attachEventExecutor("new_entity_msg", data => {
       const {
         msg: { entityId },
         msg
       } = data;
+      console.log(
+        "New entity message > ",
+        entityId,
+        storageData.phone,
+        tokenData
+      );
+
       props.addInEntityConv(entityId, msg);
-      // if (data.msg.sender != storageData.phone) {
-      //   props.helpReceived(data);
-      // }
     });
+
+    // socket.on("new_msg", data => {
+    //   console.log("New message received", data);
+
+    //   props.messageReceived(data);
+    // });
+
+    // socket.on("new_network_msg", data => {
+    //   console.log("New network message received");
+
+    //   if (data.msg.sender != storageData.phone) {
+    //     props.helpReceived(data);
+    //   }
+    // });
+
+    // socket.on("new_entity_msg", data => {
+    //   const {
+    //     msg: { entityId },
+    //     msg
+    //   } = data;
+    //   console.log(
+    //     "New entity message > ",
+    //     entityId,
+    //     storageData.phone,
+    //     tokenData
+    //   );
+
+    //   getEntityConversation(entityId, storageData.phone, tokenData)
+    //     .then(res => {
+    //       //setChattingData(result.data.data)
+    //       // props.saveRecentConv(result.data.data);
+    //       props.setEntityConversation(entityId, res.data.data);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+
+    //   // props.addInEntityConv(entityId, msg);
+    // });
 
     getEntities(tokenData)
       .then(result => {
@@ -299,7 +344,7 @@ function home(props) {
                 width: width * 0.66
               }}
             >
-              Network Messages
+              {props.storageData.lan.network_messages}
             </Text>
             <Text
               numberOfLines={1}
@@ -361,7 +406,6 @@ function home(props) {
 }
 
 function mapStateToProps(state) {
-  // console.log("State >", state);
   return {
     storageData: state
   };
@@ -378,6 +422,7 @@ export default connect(mapStateToProps, {
   changeLanguage,
   helpReceived,
   saveHelpMessages,
+  setEntityConversation,
   addInHelp,
   setEntities,
   addInEntityConv

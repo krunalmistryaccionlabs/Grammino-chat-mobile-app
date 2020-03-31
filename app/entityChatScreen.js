@@ -65,7 +65,8 @@ const EntityChatScreen = ({
   userToken,
   setEntityConversation,
   entityConversation,
-  addInEntityConv
+  addInEntityConv,
+  language
 }) => {
   let [modalVisibleImage, setModalVisibleImage] = useState(false);
   let [showImage, setShowImage] = useState("");
@@ -92,7 +93,6 @@ const EntityChatScreen = ({
 
     sendActionToEntity(entity._id, userInfo.phone, userName, key, userToken)
       .then(res => {
-        console.log("Sent Action > ", res.data.data);
         addInEntityConv(entity._id, res.data.data);
       })
       .catch(err => {
@@ -226,7 +226,7 @@ const EntityChatScreen = ({
                       paddingTop: 2
                     }}
                   >
-                    {entityAction.actionLabel}
+                    {language[entityAction.actionKey] || "N.A."}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -383,7 +383,7 @@ const EntityChatScreen = ({
                 paddingHorizontal: width * 0.04
               }}
             >
-              {message.message}
+              {language[`${message.message}_chat`] || message.message}
             </Text>
             <Text
               style={{
@@ -463,7 +463,8 @@ function mapStateToProps(state) {
   return {
     userInfo: state.storageData,
     userToken: state.userToken,
-    entityConversation: state.entityConversation
+    entityConversation: state.entityConversation,
+    language: state.lan
   };
 }
 

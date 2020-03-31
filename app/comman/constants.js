@@ -8,7 +8,9 @@ export const conversationIdAutoMessage = "123456789";
 export const recieverAutoMessage = "00000";
 
 export const entityActions = [
-  { actionKey: "take_photo", actionLabel: "Click a photo" }
+  {
+    actionKey: "take_photo"
+  }
 ];
 
 export const language = {
@@ -31,7 +33,10 @@ export const language = {
     image_value: "Image",
     video_value: "Video",
     sign_up_as: "Sign up as user",
-    sign_up_value: "Sign Up"
+    sign_up_value: "Sign Up",
+    network_messages: "Public Messages",
+    take_photo: "Click a photo",
+    take_photo_chat: "Send me a photo"
   },
   marathi: {
     app_name: "ग्रामीनो हब",
@@ -52,7 +57,10 @@ export const language = {
     image_value: "प्रतिमा",
     video_value: "व्हिडिओ",
     sign_up_as: "वापरकर्ता म्हणून साइन अप करा",
-    sign_up_value: "साइन अप करा"
+    sign_up_value: "साइन अप करा",
+    network_messages: "सार्वजनिक संदेश",
+    take_photo: "फोटो क्लिक करा",
+    take_photo_chat: "फोटो क्लिक करा"
   },
   hindi: {
     app_name: "ग्रामिनो हब",
@@ -73,6 +81,9 @@ export const language = {
     image_value: "छवि",
     video_value: "वीडियो",
     sign_up_as: "उपयोगकर्ता के रूप में साइन अप करें",
-    sign_up_value: "साइन अप करें"
+    sign_up_value: "साइन अप करें",
+    network_messages: "सार्वजनिक संदेश",
+    take_photo: "फोटो क्लिक करें",
+    take_photo_chat: "फोटो क्लिक करें"
   }
 };

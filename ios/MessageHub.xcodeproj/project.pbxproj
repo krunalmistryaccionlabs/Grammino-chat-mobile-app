@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MessageHubTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MessageHubTests.m */; };
 		02FD9FC03ACAF2A108BB834C /* libPods-MessageHubTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F08580331B81181483675684 /* libPods-MessageHubTests.a */; };
