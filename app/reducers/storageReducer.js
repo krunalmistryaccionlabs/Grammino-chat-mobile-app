@@ -99,7 +99,6 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         convDetails: filterChat(action.payload)
       };
-
     case "ADD_IN_ENTITY_CONV": {
       const { entityId, data } = action.payload;
 
